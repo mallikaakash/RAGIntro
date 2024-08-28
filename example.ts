@@ -6,9 +6,6 @@ import {
   NodeWithScore, VectorStoreIndex,
 } from "llamaindex";
 
-import { HuggingFaceEmbedding } from "llamaindex/embeddings";
-
-
 dotenv.config();
 async function main() {
   // Load essay from abramov.txt in Node
@@ -19,13 +16,8 @@ async function main() {
   // Create Document object with essay
   const document = new Document({ text: essay, id_: path });
 
-  const embedModel = new HuggingFaceEmbedding({ model: "sentence-transformers/all-MiniLM-L6-v2" });
-  const serviceContext = serviceContextFromDefaults({ embedModel });
-
-
   // Split text and create embeddings. Store them in a VectorStoreIndex
-  const index = await VectorStoreIndex.fromDocuments([document], { serviceContext });
-
+  const index = await VectorStoreIndex.fromDocuments([document]);
 
   // Query the index
   const queryEngine = index.asQueryEngine();
